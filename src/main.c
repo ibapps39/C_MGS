@@ -3,11 +3,14 @@
 #include "movement.h"
 #include "file_directory_managment.h"
 #include "structures.h"
+#include "Game.h"
 
 #define VIRT_WIDTH 600
 #define VIRT_HEIGHT 600
 #define DEFAULT_FPS 60
 #define BG_COLOR BLACK
+
+Game GAME;
 
 int main(void)
 {
@@ -15,22 +18,13 @@ int main(void)
         int SCREEN_W = VIRT_WIDTH;
         int SCREEN_H = VIRT_HEIGHT;
         int TARGET_FPS = DEFAULT_FPS;
-        const char *RESOURCES_PATH = "./resources/";
-
         InitWindow(SCREEN_W, SCREEN_H, "Raylib_Template");
         SetWindowState(FLAG_WINDOW_RESIZABLE);
         SetTargetFPS(TARGET_FPS);
-        
-        
 
-        TrackedCam tracked_cam = get_TrackedCam(cam_pos, cam_target, cam_up, cam_fovy);
-        Camera3D* cam = &tracked_cam.cam;
-        TrackedCam* cam_tcp = &tracked_cam;
-        Vec3 pos_delta = {-10, 10, 10};
-
-        
-        update_TrackedCam(cam_tcp, cube_pos, Vector3Add(cube_pos, pos_delta));
-
+        ChangeDirectory(GetApplicationDirectory());
+        const char *RESOURCES_PATH = "./resources/";
+        INIT(&GAME);
 
         while (!WindowShouldClose())
         {
@@ -39,18 +33,18 @@ int main(void)
                 int W = GetScreenWidth();
                 const float time_passed = GetTime();
 
-
-                //
-
+                CONTROL_FLOW(&GAME, dt);
+                
                 BeginDrawing();
                 ClearBackground(BG_COLOR);
-                        BeginMode3D(*cam);
+                        BeginMode3D(GAME.tracked_cam.cam);
                                 DrawGrid(10, 10.0f);
-                                DrawCube(cube_pos, 2, 10, 2, WHITE);
+                                DrawModel(GAME.player.model, GAME.player.pos, 1.0f, WHITE);
                         EndMode3D();
                 EndDrawing();
         }
-
+        UnloadTexture(GAME.player.model.materials->maps->texture);
+        UnloadModel(GAME.player.model);
         CloseWindow();
         return 0;
 }

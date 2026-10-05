@@ -12,14 +12,7 @@ typedef enum CAM_INFO
 } CAM_INFO;
 
 // 3D Version
-Vec3 Cam_Info_ECS[6] = {
-    (Vec3){.x = 0, .y = 0, .z = 0}, // POS
-    (Vec3){.x = 0, .y = 0, .z = 0}, // PAST_POS
-    (Vec3){.x = 0, .y = 0, .z = 0}, // FORWARD
-    (Vec3){.x = 0, .y = 0, .z = 0}, // UP
-    (Vec3){.x = 0, .y = 0, .z = 0}, // RIGHT
-    (Vec3){.x = 0, .y = 0, .z = 0}  // LEFT
-};
+extern Vec3 Cam_Info_ECS[6];
 typedef struct TrackedCam
 {
         Vec3 past_pos;
@@ -66,7 +59,7 @@ void update_cam(Camera3D* cam, const Vec3 target, const Vec3 pos)
 TrackedCam get_TrackedCam(Vec3 pos, Vec3 target, Vec3 up, float fovy)
 {
     TrackedCam cam = {0};
-    cam.cam = init_cam(pos, target,up, fovy);
+    cam.cam = init_cam(pos, target, up, fovy);
     cam.forward = get_forward(cam.cam);
     cam.up = up;
     cam.right = get_right(cam.cam);
@@ -78,7 +71,7 @@ void update_TrackedCam(TrackedCam* cam, Vec3 target, const Vec3 position_transfo
 {
     cam->past_pos = cam->pos;
     cam->pos = cam->cam.position;
-    cam->forward = Vector3Normalize(get_forward(cam->cam));
-    cam->right = Vector3Normalize(get_right(cam->cam));
+    cam->forward = get_forward(cam->cam);
+    cam->right = get_right(cam->cam);
     update_cam(&cam->cam, target, position_transformation);
 }

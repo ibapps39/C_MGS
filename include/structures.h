@@ -16,6 +16,7 @@ void DRAW_WHATEVER()
 
 typedef struct PLAYER
 {
+    float move_speed;
     Vec3 fwd_v;
     Vec3 pos;
     Vec3 size;
@@ -24,9 +25,10 @@ typedef struct PLAYER
     ModelAnimation* m_anime;
 } Player;
 
-Player get_player(Vec3 pos, Vec3 fwd, Texture player_texture, Model player_model, ModelAnimation* player_anime, Vec3 size)
+Player get_player(float move_speed, Vec3 pos, Vec3 fwd, Texture player_texture, Model player_model, ModelAnimation* player_anime, Vec3 size)
 {
     Player player = {0};
+    player.move_speed = move_speed;
     player.fwd_v = fwd;
     player.pos = pos;
     player.texture = player_texture;
