@@ -75,3 +75,23 @@ void update_TrackedCam(TrackedCam* cam, Vec3 target, const Vec3 position_transfo
     cam->right = get_right(cam->cam);
     update_cam(&cam->cam, target, position_transformation);
 }
+
+Vec3 ZOOM_IN(Vec3 offset, float amount);
+Vec3 ZOOM_IN(Vec3 offset, float amount)
+{
+    float sign_x, sign_y, sign_z;
+    sign_x = SIGN_OF(offset.x);
+    sign_y = SIGN_OF(offset.y);
+    sign_z = SIGN_OF(offset.z);
+    Vec3 zoomed = {
+        .x = offset.x - (amount*sign_x), 
+        .y = offset.y - (amount*sign_y), 
+        .z = offset.z - (amount*sign_z) 
+    };
+    return zoomed;
+}
+Vec3 ZOOM_OUT(Vec3 offset, float amount);
+Vec3 ZOOM_OUT(Vec3 offset, float amount)
+{
+    return ZOOM_IN(offset, -amount);
+}

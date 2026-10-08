@@ -29,3 +29,5 @@ typedef Vector3 Vec3;
 #define FUNCTIONAL FALSE
 
 #define COMMON_MOVE_KEY_DOWN (IsKeyDown(KEY_W) || IsKeyDown(KEY_S) || IsKeyDown(KEY_A) || IsKeyDown(KEY_D))
+
+static inline signed int SIGN_OF(int x) { x = x<0 ? -1 : 1; return x; } 

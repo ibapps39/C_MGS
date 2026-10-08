@@ -2,8 +2,6 @@
 #include "common.h"
 #include "camera.h"
 
-
-
 Vec3 get_flat_right_norm(const Camera3D cam) {
     Vec3 v = Vector3CrossProduct(get_flat_forward(cam), cam.up);
     v =  Vector3Normalize(v);
@@ -11,13 +9,10 @@ Vec3 get_flat_right_norm(const Camera3D cam) {
     return v;
 }
 
-
-void move(Vec3* p, TrackedCam* cam, Vector3 fwd, float move_speed)
+void move(Vec3* pos, Vec3 right, Vector3 forward, float move_speed)
 {
-    Vec3 forward = fwd;
     forward.y = 0;
-    forward = Vector3Normalize(fwd);
-    Vec3 right = Vector3Normalize(cam->right);
+    forward = Vector3Normalize(forward);
     right.y = 0;
     right = Vector3Normalize(right);
 
@@ -29,5 +24,5 @@ void move(Vec3* p, TrackedCam* cam, Vector3 fwd, float move_speed)
     if (IsKeyDown(KEY_D)) dir = Vector3Add(dir, right);          
 
     Vec3 scaled = Vector3Scale(dir, move_speed);
-    *p = Vector3Add(*p, scaled);
+    *pos = Vector3Add(*pos, scaled);
 }
